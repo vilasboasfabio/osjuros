@@ -80,3 +80,19 @@ hr{
     margin-top: 3%;
     margin-left: 35%;
 }
+#intr{
+    margin-top: -1%;
+    text-align: center;
+    width: 100%;
+    background-color: black;
+    color: azure;
+    font-size: 20px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    height: 8%;
+}
+#it{
+    width: 100%;
+    margin-top: -0.5%;
+    margin-bottom: 3%;
+}

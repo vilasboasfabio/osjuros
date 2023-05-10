@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
+
 <head>
- <title>Calculadora de Juros</title>
- <script src="assets/script/calcular.js"></script>
- <link rel="stylesheet" href="assets/css/style.css">
+    <title>Calculadora de Juros</title>
+    <script src="assets/script/calcular.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
-<div id="inp">
-    <label for="capital">Capital:</label>
-    <input type="number" id="capital">
     
-    <label for="taxa">Taxa de juros (%):</label>
-    <input type="number" id="taxa">
-    
-    <label for="tempo">Tempo em meses:</label>
-    <input type="number" id="tempo">
+    <div id="intr">
+        <p id="it">Calcule os juros de um investimento hipotético. Insira nos campos abaixo o valor disponivel do seu capital
+            para o respectivo investimento, em seguida, coloque o valor da taxa do juros (mensal), em seguida, coloque o
+            período em que o seu valor ficará aplicado (em meses).</p>
+    </div>
+   
+    <div id="inp">
+        <label for="capital">Capital:</label>
+        <input type="number" id="capital">
+
+        <label for="taxa">Taxa de juros (%):</label>
+        <input type="number" id="taxa">
+
+        <label for="tempo">Tempo em meses:</label>
+        <input type="number" id="tempo">
     </div>
     <div id="bts">
-    
-    <button onclick="calcularJurosSimples()" id="bt1">Juros Simples</button>
-    <button onclick="calcularJurosCompostos()" id="bt2">Juros Compostos</button>
+
+        <button onclick="calcularJurosSimples()" id="bt1">Juros Simples</button>
+        <button onclick="calcularJurosCompostos()" id="bt2">Juros Compostos</button>
     </div>
     <hr>
     <div id="tl">
@@ -27,10 +36,11 @@
         <p id="rc">Em regime de juros compostos...</p>
     </div>
     <article id="resps">
-    <div id="resultadoJurosSimples"></div>
- 
-    <div id="resultadoJurosCompostos"></div>
-  
+        <div id="resultadoJurosSimples"></div>
+
+        <div id="resultadoJurosCompostos"></div>
+
     </article>
- </body>
- </html>
+</body>
+
+</html>
