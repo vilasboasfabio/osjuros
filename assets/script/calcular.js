@@ -12,7 +12,7 @@ function calcularJurosSimples() {
     let montanteSimples = capital + jurosSimples;
 
     let resultadoSimples = document.createElement("p");
-    resultadoSimples.appendChild(document.createTextNode("Juros Simples: R$" + jurosSimples));
+    resultadoSimples.appendChild(document.createTextNode("Juros Simples: R$" + jurosSimples.toFixed(2)));
 
     let montante = document.createElement("p");
     montante.appendChild(document.createTextNode("Montante: R$" + montanteSimples.toFixed(2)));
@@ -38,7 +38,7 @@ function calcularJurosCompostos() {
     let montanteCompostos = capital * multiplicacaoRepetida((1 + taxa/100), tempo);
 
     let resultadoCompostos = document.createElement("p");
-    resultadoCompostos.appendChild(document.createTextNode("Juros Compostos: R$" + jurosCompostos));
+    resultadoCompostos.appendChild(document.createTextNode("Juros Compostos: R$" + jurosCompostos.toFixed(2)));
 
     let montante = document.createElement("p");
     montante.appendChild(document.createTextNode("Montante: R$" + montanteCompostos.toFixed(2)));
