@@ -6,7 +6,7 @@
  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
+<div id="inp">
     <label for="capital">Capital:</label>
     <input type="number" id="capital">
     
@@ -15,11 +15,22 @@
     
     <label for="tempo">Tempo em meses:</label>
     <input type="number" id="tempo">
+    </div>
+    <div id="bts">
     
-    <button onclick="calcularJurosSimples()">Juros Simples</button>
-    <button onclick="calcularJurosCompostos()">Juros Compostos</button>
-    
+    <button onclick="calcularJurosSimples()" id="bt1">Juros Simples</button>
+    <button onclick="calcularJurosCompostos()" id="bt2">Juros Compostos</button>
+    </div>
+    <hr>
+    <div id="tl">
+        <p id="rs">Em regime de juros simples...</p>
+        <p id="rc">Em regime de juros compostos...</p>
+    </div>
+    <article id="resps">
     <div id="resultadoJurosSimples"></div>
+ 
     <div id="resultadoJurosCompostos"></div>
+  
+    </article>
  </body>
  </html>
