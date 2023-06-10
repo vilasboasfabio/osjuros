@@ -1,33 +1,41 @@
-let iniciar = prompt("Deseja adicionar algum aluno?");
-let nome = prompt("Insira o Nome do aluno");
-let nota = Number(prompt("insira a nota do aluno"));
-let notas = [];
-let alunos = [];
-let media;
+let iniciar = prompt("Olá, deseja adicionar algum aluno?")
+let nome = prompt("Insira o nome do aluno")
+let nota = ("Insira a nota do aluno")
 let soma;
-let maior = 0;
-let menor = 10;
+let média;
+let maior;
+let menor;
+let contador = 0;
+let alunos = [];
+let notas = [];
+let continuar = true;
 
-while (true) {
-
-    iniciar = prompt("Deseja adicionar algum aluno?").toLowerCase;
-    nome = prompt("Insira o Nome do aluno");
-    nota = Number(prompt("insira a nota do aluno"));
-    if (iniciar === "não"){
-        false;
-        break;
-    }else if(iniciar == "sim"){
-
-        alunos.push(nome);
-        let todas = notas.push(nota);
-
-        for (let i = 0; i < todas.length; i++){
-            soma += todas[i];
+while(continuar){
+    alunos.push(nome)
+    notas.push(nota)
+    soma += nota;
+    contador++;
+    if(contador == 1){
+        maior = nota;
+        menor = nota;
+    }else{
+        if(nota > maior){
+            maior = nota;
         }
-        
-
+        if(nota < menor){
+            menor = nota;
+        }
     }
-    console.log(alunos);
-    console.log(soma);
+    média = soma / contador;
+    continuar = confirm("Deseja continuar?")
+    if(continuar){
+        nome = prompt("Insira o nome do aluno")
+        nota = prompt("Insira a nota do aluno")
+    }
 }
+console.log("A maior nota é: " + maior)
+console.log("A menor nota é: " + menor)
+console.log("A média da turma é: " + média)
+console.log("Os alunos são: " + alunos)
+console.log("As notas são: " + notas)
 
