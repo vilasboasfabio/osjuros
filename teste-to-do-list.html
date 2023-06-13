@@ -1,172 +1,227 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>To-Do List</title>
+  <title>Blog To-Do List</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
     }
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
+
+    h1 {
+      text-align: center;
+      color: #333;
     }
-    .item {
-      margin-bottom: 10px;
+
+    form {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      display: block;
+      width: 100%;
       padding: 10px;
-      background-color: #f2f2f2;
-      border-radius: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
     }
-    .item .title {
-      font-weight: bold;
-      margin-bottom: 5px;
+
+    textarea {
+      height: 80px;
     }
-    .item .date {
-      font-size: 12px;
-      color: #999;
-    }
-    .item .description {
-      margin-bottom: 5px;
-    }
-    .item .author {
-      font-size: 12px;
-      color: #666;
-    }
-    .item .actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 5px;
-    }
-    .item .actions button {
-      padding: 5px 10px;
-      border-radius: 3px;
+
+    button[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
       cursor: pointer;
     }
-    .item .actions .delete {
-      background-color: #f44336;
-      color: white;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
     }
-    .item .actions .edit {
-      background-color: #4CAF50;
-      color: white;
-    }
-    .item .new {
+
+    li {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      padding: 10px;
       position: relative;
-      display: inline-block;
-      margin-left: 5px;
     }
-    .item .new::after {
-      content: 'New';
+
+    li h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    li p {
+      margin: 5px 0;
+    }
+
+    .editButton,
+    .deleteButton {
+      background-color: transparent;
+      border: none;
+      color: #333;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+      padding: 0;
+    }
+
+    .deleteButton {
+      color: #f44336;
+    }
+
+    .new-tag {
       position: absolute;
-      bottom: -10px;
-      left: 0;
-      font-size: 10px;
-      color: white;
-      background-color: #4CAF50;
-      padding: 2px 5px;
-      border-radius: 3px;
+      bottom: 10px;
+      left: 10px;
+      font-size: 12px;
+      color: #fff;
+      background-color: #333;
+      padding: 2px 6px;
+      border-radius: 2px;
     }
-    .item .edited {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      margin-left: 5px;
-      border-radius: 50%;
-      background-color: #4CAF50;
+    .error-message {
+      color: red;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>To-Do List</h1>
-    <form id="todoForm">
-      <input type="text" id="titleInput" placeholder="Título" required />
-      <input type="date" id="dateInput" min="" required />
-      <textarea id="descriptionInput" placeholder="Descrição" required></textarea>
-      <input type="text" id="authorInput" placeholder="Autor" required />
-      <button type="submit">Adicionar</button>
-    </form>
-    <div id="todoList"></div>
-  </div>
+  <h1>Blog To-Do List</h1>
+
+  <form id="todoForm">
+    <input type="text" id="titleInput" placeholder="Título" required>
+    <input type="date" id="dateInput" required>
+    <textarea id="descriptionInput" placeholder="Descrição" required></textarea>
+    <input type="text" id="authorInput" placeholder="Autor" required>
+    <button type="submit">Adicionar</button>
+    <p id="errorMessage" class="error-message"></p>
+  </form>
+
+  <ul id="todoList"></ul>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const todoForm = document.getElementById('todoForm');
-      const todoList = document.getElementById('todoList');
+   // Função para adicionar um novo item à lista
+function addItem(event) {
+  event.preventDefault();
 
-      // Obter a data atual no formato "YYYY-MM-DD"
-      const currentDate = new Date().toISOString().split('T')[0];
-      const dateInput = document.getElementById('dateInput');
-      dateInput.min = currentDate;
+  // Obter os valores dos campos de entrada
+  var title = document.getElementById('titleInput').value;
+  var dateInput = document.getElementById('dateInput');
+  var description = document.getElementById('descriptionInput').value;
+  var author = document.getElementById('authorInput').value;
 
-      todoForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+  // Obter a referência à lista
+  var todoList = document.getElementById('todoList');
 
-        // Obter os valores dos inputs
-        const title = document.getElementById('titleInput').value;
-        const date = document.getElementById('dateInput').value;
-        const description = document.getElementById('descriptionInput').value;
-        const author = document.getElementById('authorInput').value;
+  // Obter a data atual
+  var currentDate = new Date();
+  var selectedDate = new Date(dateInput.value);
 
-        // Criar o item da lista
-        const item = document.createElement('div');
-        item.classList.add('item');
+  // Verificar se a data selecionada é anterior à data atual
+  if (selectedDate < currentDate) {
+    document.getElementById('errorMessage').textContent = 'Por favor, escolha uma data válida.';
+    return;
+  }
 
-        // Verificar se o item foi editado
-        let edited = false;
+  // Limpar a mensagem de erro, se houver
+  document.getElementById('errorMessage').textContent = '';
 
-        // Adicionar os dados do item
-        item.innerHTML = `
-          <div class="title">${title}</div>
-          <div class="date">${date}</div>
-          <div class="description">${description}</div>
-          <div class="author">${author}</div>
-          <div class="actions">
-            <button class="delete" onclick="deleteItem(this)">Deletar</button>
-            <button class="edit" onclick="editItem(this)">Editar</button>
-            ${edited ? '<span class="edited"></span>' : '<span class="new"></span>'}
-          </div>
-        `;
+  // Criar o novo item da lista como uma string HTML
+  var listItem = document.createElement('li');
 
-        // Adicionar o item à lista
-        todoList.appendChild(item);
+  var titleElement = document.createElement('h3');
+  titleElement.textContent = title;
+  listItem.appendChild(titleElement);
 
-        // Limpar os inputs
-        todoForm.reset();
-      });
-    });
+  var dateElement = document.createElement('p');
+  dateElement.innerHTML = '<strong>Data:</strong> ' + dateInput.value;
+  listItem.appendChild(dateElement);
 
-    function deleteItem(button) {
-      const item = button.parentNode.parentNode;
-      item.parentNode.removeChild(item);
-    }
+  var descriptionElement = document.createElement('p');
+  descriptionElement.innerHTML = '<strong>Descrição:</strong> ' + description;
+  listItem.appendChild(descriptionElement);
 
-    function editItem(button) {
-      const item = button.parentNode.parentNode;
-      const title = item.querySelector('.title');
-      const date = item.querySelector('.date');
-      const description = item.querySelector('.description');
-      const author = item.querySelector('.author');
-      const edited = item.querySelector('.edited');
-      const newItem = item.querySelector('.new');
+  var authorElement = document.createElement('p');
+  authorElement.innerHTML = '<strong>Autor:</strong> ' + author;
+  listItem.appendChild(authorElement);
 
-      // Ativar a edição dos campos
-      title.setAttribute('contenteditable', 'true');
-      date.setAttribute('contenteditable', 'true');
-      description.setAttribute('contenteditable', 'true');
-      author.setAttribute('contenteditable', 'true');
+  var editButton = document.createElement('button');
+  editButton.className = 'editButton';
+  editButton.textContent = 'Editar';
+  editButton.addEventListener('click', function() {
+    editItem(this);
+  });
+  listItem.appendChild(editButton);
 
-      // Remover a marcação "New" e adicionar a bolinha verde de edição
-      if (newItem) {
-        newItem.style.display = 'none';
-      }
-      if (edited) {
-        edited.style.display = 'inline-block';
-      }
+  var deleteButton = document.createElement('button');
+  deleteButton.className = 'deleteButton';
+  deleteButton.textContent = 'Deletar';
+  deleteButton.addEventListener('click', function() {
+    deleteItem(this);
+  });
+  listItem.appendChild(deleteButton);
 
-      // Desativar o botão de edição
-      button.disabled = true;
-    }
+  // Adicionar o novo item à lista
+  todoList.appendChild(listItem);
+
+  // Limpar os campos de entrada
+  document.getElementById('titleInput').value = '';
+  dateInput.value = '';
+  document.getElementById('descriptionInput').value = '';
+  document.getElementById('authorInput').value = '';
+}
+
+// Função para deletar um item da lista
+function deleteItem(item) {
+  var listItem = item.parentNode;
+  var todoList = document.getElementById('todoList');
+  todoList.removeChild(listItem);
+}
+
+// Função para editar um item da lista
+function editItem(item) {
+  var listItem = item.parentNode;
+  var title = listItem.getElementsByTagName('h3')[0].textContent;
+  var date = listItem.getElementsByTagName('p')[0].innerHTML.replace('<strong>Data:</strong> ', '');
+  var description = listItem.getElementsByTagName('p')[1].innerHTML.replace('<strong>Descrição:</strong> ', '');
+  var author = listItem.getElementsByTagName('p')[2].innerHTML.replace('<strong>Autor:</strong> ', '');
+
+  // Preencher os campos de entrada com os valores do item selecionado
+  document.getElementById('titleInput').value = title;
+  document.getElementById('dateInput').value = date;
+  document.getElementById('descriptionInput').value = description;
+  document.getElementById('authorInput').value = author;
+
+  // Adicionar a tag "editado" ao título
+  var newTitle = title + ' (editado)';
+  listItem.getElementsByTagName('h3')[0].innerHTML = newTitle;
+
+  // Remover o item da lista
+  deleteItem(item);
+}
+
+// Adicionar um ouvinte de evento para o formulário de adicionar item
+var todoForm = document.getElementById('todoForm');
+todoForm.addEventListener('submit', addItem);
+
   </script>
 </body>
 </html>
+
+
+

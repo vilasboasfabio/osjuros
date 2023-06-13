@@ -107,7 +107,7 @@ function updateList() {
 function formatDate(dateString) {
   var date = new Date(dateString);
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  return date.toLocaleDateString('pt-BR', options);
 }
 
 function validateDate() {
