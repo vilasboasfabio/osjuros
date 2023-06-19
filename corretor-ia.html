@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Corretor Ortográfico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin-top: 50px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      resize: vertical;
+    }
+    
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    .message {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .output {
+      white-space: pre-wrap;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Corretor Ortográfico</h1>
+    <textarea id="inputText" placeholder="Digite o texto aqui..." maxlength="500"></textarea>
+    <button onclick="corrigirTexto()">Corrigir Texto</button>
+    <div id="outputContainer" style="display: none;">
+      <p class="message">Olá, obrigado por contar com a minha ajuda, aqui está a versão corrigida do seu texto:</p>
+      <div id="outputText" class="output"></div>
+    </div>
+  </div>
+
+  <script>
+    async function corrigirTexto() {
+      const inputText = document.getElementById('inputText').value;
+      const outputContainer = document.getElementById('outputContainer');
+      const outputTextElement = document.getElementById('outputText');
+
+      const correctedText = await corrigirErros(inputText);
+      outputTextElement.textContent = correctedText;
+      outputContainer.style.display = 'block';
+    }
+
+    async function corrigirErros(texto) {
+      const url = 'https://languagetool.org/api/v2/check';
+      const language = 'pt-BR'; // Defina o idioma desejado
+
+      const response = await fetch(`${url}?text=${encodeURIComponent(texto)}&language=${language}`);
+
+      const result = await response.json();
+      const corrections = result.matches.map(match => ({
+        offset: match.offset,
+        length: match.length,
+        correction: match.replacements[0].value
+      }));
+
+      let correctedText = texto;
+      for (let i = corrections.length - 1; i >= 0; i--) {
+        const correction = corrections[i];
+        correctedText = correctedText.substring(0, correction.offset) +
+          correction.correction +
+          correctedText.substring(correction.offset + correction.length);
+      }
+
+      return correctedText;
+    }
+  </script>
+</body>
+</html>
